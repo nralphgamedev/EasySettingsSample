@@ -7,20 +7,20 @@ This project provides a very simple pause menu with two setting types for adjust
 
 The pause menu can be accessed through a new PIE session by pressing Shift + Esc.
 
-![Pause Menu](ReadmeImages\PauseMenu.png)
+![Pause Menu](ReadmeImages/PauseMenu.png)
 
 
 SettingTypes
 ------------
 
-**[SettingBase](Plugins\EasySettings\Source\EasySettings\Public\SettingTypes\SettingBase.h)**
+**[SettingBase](Plugins/EasySettings/Source/EasySettings/Public/SettingTypes/SettingBase.h)**
 - The various structs that derive from FSettingBase can be used in any uclass or blueprint that needs settings saved or retrieved from an ini file.
 - This allows settings to be adjusted through the editor for individual objects, rather than directly hard-coded in the game instance or manipulated through the ini file itself.
 
-**[FloatSetting](Plugins\EasySettings\Source\EasySettings\Public\SettingTypes\FloatSetting.h)**
+**[FloatSetting](Plugins/EasySettings/Source/EasySettings/Public/SettingTypes/FloatSetting.h)**
 - Used to ensure values stay within a specific range.
 
-**[OpposingTogglesSetting](Plugins\EasySettings\Source\EasySettings\Public\SettingTypes\OpposingTogglesSetting.h)**
+**[OpposingTogglesSetting](Plugins/EasySettings/Source/EasySettings/Public/SettingTypes/OpposingTogglesSetting.h)**
 - Used to ensure only one of the toggles can be active at a time.
 
 
@@ -32,28 +32,28 @@ Setting templates are available for use, and can be found in the plugin's conten
 **WBP_NumberedSlider**
 - Setup with a FloatSetting. Allows the user to adjust a FloatSetting by either manually entering a new value or adjusting the slider.
 
-![Numbered Slider Widget](ReadmeImages\NumberedSlider.png)
+![Numbered Slider Widget](ReadmeImages/NumberedSlider.png)
 
 **WBP_OpposingToggles**
 - Setup with an OpposingTogglesSetting. Allows the user to choose between two options.
 
-![Opposing Toggles Widget](ReadmeImages\OpposingToggles.png)
+![Opposing Toggles Widget](ReadmeImages/OpposingToggles.png)
 
-[EasySettingsSubsystem](Plugins\EasySettings\Source\EasySettings\Public\EasySettingsSubsystem.h)
+[EasySettingsSubsystem](Plugins/EasySettings/Source/EasySettings/Public/EasySettingsSubsystem.h)
 ---------------------
 
 Stores all setting types that have been successfully setup. 
 Contains delegates that notify whenever a setting is successfully updated.
 
-![Subsystem Delegates](ReadmeImages\SubsystemDelegates.png)
+![Subsystem Delegates](ReadmeImages/SubsystemDelegates.png)
 
 
-[EasySettingsInterface](Plugins\EasySettings\Source\EasySettings\Public\EasySettingsInterface.h)
+[EasySettingsInterface](Plugins/EasySettings/Source/EasySettings/Public/EasySettingsInterface.h)
 ---------------------
 
 An interface intended to be implemented by widgets that affect the individual setting types.
 
-![Widget Interface](ReadmeImages\WidgetInterface.png)
+![Widget Interface](ReadmeImages/WidgetInterface.png)
 
 **ResetToDefault**
 - Signals the widget to reset to default values.
@@ -71,12 +71,12 @@ An interface intended to be implemented by widgets that affect the individual se
 - Returns true if the setting is different than the last applied value.
 
 
-[EasySettingsStatics](Plugins\EasySettings\Source\EasySettings\Public\EasySettingsStatics.h)
+[EasySettingsStatics](Plugins/EasySettings/Source/EasySettings/Public/EasySettingsStatics.h)
 -------------------
 
 Static function library for ease of use between blueprint and C++.
 
-![Static Functions](ReadmeImages\StaticFunctions.png)
+![Static Functions](ReadmeImages/StaticFunctions.png)
 
 **SetupFloatSetting**
 - Stores a pointer to the setting in a TMap. Updates the setting with what is already present in the ini file or writes the defaults out if it isn't already there.
