@@ -24,13 +24,13 @@ private:
 public:
 	/**
 	 * Stores a pointer to the setting in a TMap. Updates the setting with what is already present in the ini file or writes the defaults out if it isn't already there.
-	 * Will overwrite existing entries and print a warning to the output if called multiple times on the same setting.
+	 * Will overwrite existing entries and print a warning to the output if called multiple times on the same entry.
 	 * @see LogEasySettings category in the output log.
 	 * @param WorldContextObject	World object used for getting the EasySettingsSubsystem.
 	 * @param Setting				The setting we want to setup.
 	 * @param bOutSuccess			True if the setting was set up within Min and Max values. False if the Default value could not be used or another setting was already setup using the provided Setting parameter.
 	 */
-	UFUNCTION(BlueprintCallable, Category = "Easy Settings", meta = (WorldContext = "WorldContextObject"))
+	UFUNCTION(BlueprintCallable, Category = "Easy Settings Statics", meta = (WorldContext = "WorldContextObject"))
 	static void SetupFloatSetting(const UObject* WorldContextObject, UPARAM(ref) FFloatSetting& Setting, bool& bOutSuccess);
 
 	/**
@@ -40,7 +40,7 @@ public:
 	 * @param bOutSuccess			True if the setting was found in our FloatSettings.
 	 * @param OutSetting			A reference to the registered setting.
 	 */
-	UFUNCTION(BlueprintPure, Category = "Easy Settings", meta = (WorldContext = "WorldContextObject"))
+	UFUNCTION(BlueprintPure, Category = "Easy Settings Statics", meta = (WorldContext = "WorldContextObject"))
 	static void GetFloatSetting(const UObject* WorldContextObject, const FSettingBase& SettingID, bool& bOutSuccess, FFloatSetting& OutSetting);
 
 	/**
@@ -50,18 +50,18 @@ public:
 	 * @param NewCurrent			The new current value we are trying to update to.
 	 * @param bOutSuccess			True if the update was successful. False if nothing changed or the setting was never setup.
 	 */
-	UFUNCTION(BlueprintCallable, Category = "Easy Settings", meta = (WorldContext = "WorldContextObject"))
+	UFUNCTION(BlueprintCallable, Category = "Easy Settings Statics", meta = (WorldContext = "WorldContextObject"))
 	static void UpdateFloatSetting(const UObject* WorldContextObject, const FSettingBase& SettingID, float NewCurrent, bool& bOutSuccess);
 
 	/**
 	 * Stores a pointer to the setting in a TMap. Updates the setting with what is already present in the ini file or writes the defaults out if it isn't already there.
-	 * Will overwrite existing entries and print a warning to the output if called multiple times on the same setting.
+	 * Will overwrite existing entries and print a warning to the output if called multiple times on the same entry.
 	 * @see LogEasySettings category in the output log.
 	 * @param WorldContextObject	World object used for getting the EasySettingsSubsystem.
 	 * @param Setting				The setting we want to setup.
 	 * @param bOutSuccess			False if another setting was already setup using the provided Setting parameter.
 	 */
-	UFUNCTION(BlueprintCallable, Category = "Easy Settings", meta = (WorldContext = "WorldContextObject"))
+	UFUNCTION(BlueprintCallable, Category = "Easy Settings Statics", meta = (WorldContext = "WorldContextObject"))
 	static void SetupOpposingTogglesSetting(const UObject* WorldContextObject, UPARAM(ref) FOpposingTogglesSetting& Setting, bool& bOutSuccess);
 
 	/**
@@ -71,7 +71,7 @@ public:
 	 * @param bOutSuccess			True if the setting was found in our OpposingTogglesSettings.
 	 * @param OutSetting			A reference to the registered setting.					
 	 */
-	UFUNCTION(BlueprintPure, Category = "Easy Settings", meta = (WorldContext = "WorldContextObject"))
+	UFUNCTION(BlueprintPure, Category = "Easy Settings Statics", meta = (WorldContext = "WorldContextObject"))
 	static void GetOpposingTogglesSetting(const UObject* WorldContextObject, const FSettingBase& SettingID, bool& bOutSuccess, FOpposingTogglesSetting& OutSetting);
 
 	/**
@@ -81,6 +81,6 @@ public:
 	 * @param bActivateFirst		What we will set as the updated active toggle.
 	 * @param bOutSuccess			True if the update was successful. False if nothing changed or the setting was never setup.
 	 */
-	UFUNCTION(BlueprintCallable, Category = "Easy Settings", meta = (WorldContext = "WorldContextObject"))
+	UFUNCTION(BlueprintCallable, Category = "Easy Settings Statics", meta = (WorldContext = "WorldContextObject"))
 	static void UpdateOpposingTogglesSetting(const UObject* WorldContextObject, const FSettingBase& SettingID, bool bActivateFirst, bool& bOutSuccess);
 };

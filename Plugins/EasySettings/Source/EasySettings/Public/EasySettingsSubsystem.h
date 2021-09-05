@@ -21,11 +21,11 @@ class EASYSETTINGS_API UEasySettingsSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 public:
-	/** Signals listeners whenever a float setting is changed. */
+	/** Signals listeners whenever a float setting is updated. */
 	UPROPERTY(BlueprintAssignable, Category = "Easy Settings")
 	FFloatSettingChanged FloatSettingChanged_Delegate;
 
-	/** Signals listeners whenever an opposing toggles setting is changed. */
+	/** Signals listeners whenever an opposing toggles setting is updated. */
 	UPROPERTY(BlueprintAssignable, Category = "Easy Settings")
 	FOpposingTogglesSettingChanged OpposingTogglesSettingChanged_Delegate;
 
