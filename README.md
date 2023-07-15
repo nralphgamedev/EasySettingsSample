@@ -1,7 +1,9 @@
 Overview
 ========
 
-This repository contains an Unreal Engine project with a working example of my EasySettings plugin. The plugin handles boilerplate logic for storing and retrieving custom ini variables via either C++ or blueprint.
+This repository contains an Unreal Engine project with a working example of my BP/C++ EasySettings plugin. 
+The plugin handles boilerplate logic for storing and retrieving custom ini variables, listening and responding to the changes,
+as well as providing two template widgets that may be used with the settings.
 
 This project provides a very simple pause menu with two setting types for adjusting turn rate and inverted controls.
 

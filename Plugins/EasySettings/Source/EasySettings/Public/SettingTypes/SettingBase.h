@@ -1,4 +1,4 @@
-// Copyright SixlineGames LLC. All Rights Reserved.
+// Copyright Nathan Ralph. All Rights Reserved.
 
 #pragma once
 
@@ -34,30 +34,18 @@ struct FSettingBase
 {
 	GENERATED_BODY()
 
-	/** The ini file we want to populate with this setting. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TEnumAsByte<EIniFile> IniFile = EIniFile::Game;
-
-	/** The section in the ini file that this setting will be stored. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	FString Section = "";
-
-	/** The key in the ini file that the setting will be stored with. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	FString Key = "";
-
 	/** Returns the FileName associated with the current IniFile. */
 	FString GetIniFileName()
 	{
 		switch (IniFile)
 		{
-		case EIniFile::Game:
+		case Game:
 			return GGameIni;
-		case EIniFile::GameUserSettings:
+		case GameUserSettings:
 			return GGameUserSettingsIni;
-		case EIniFile::Input:
+		case Input:
 			return GInputIni;
-		case EIniFile::Engine:
+		case Engine:
 			return GEngineIni;
 		}
 
@@ -65,17 +53,17 @@ struct FSettingBase
 	}
 
 	/** Returns the FileName associated with the current IniFile. */
-	FString GetIniFileName() const 
+	FString GetIniFileName() const
 	{
 		switch (IniFile)
 		{
-		case EIniFile::Game:
+		case Game:
 			return GGameIni;
-		case EIniFile::GameUserSettings:
+		case GameUserSettings:
 			return GGameUserSettingsIni;
-		case EIniFile::Input:
+		case Input:
 			return GInputIni;
-		case EIniFile::Engine:
+		case Engine:
 			return GEngineIni;
 		}
 
@@ -87,4 +75,16 @@ struct FSettingBase
 
 	/** Returns a key used for our TMaps. */
 	FString GetTMapKey() const { return *UEnum::GetValueAsString(IniFile) + Section + Key; }
+	
+	/** The ini file we want to populate with this setting. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TEnumAsByte<EIniFile> IniFile = Game;
+
+	/** The section in the ini file that this setting will be stored. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FString Section = "";
+
+	/** The key in the ini file that the setting will be stored with. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FString Key = "";
 };

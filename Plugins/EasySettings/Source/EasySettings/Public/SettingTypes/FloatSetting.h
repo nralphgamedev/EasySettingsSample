@@ -1,4 +1,4 @@
-// Copyright SixlineGames LLC. All Rights Reserved.
+// Copyright Nathan Ralph. All Rights Reserved.
 
 #pragma once
 
@@ -6,13 +6,33 @@
 #include "SettingBase.h"
 #include "FloatSetting.generated.h"
 
- /**
-  * Setting used to ensure values stay within a specific range.
-  */
+/**
+ * Setting used to ensure values stay within a specific range.
+ */
 USTRUCT(BlueprintType, Category = "Settings")
 struct FFloatSetting : public FSettingBase
 {
 	GENERATED_BODY()
+
+	/** Disabled default constructor. */
+	FFloatSetting() {}
+
+	FFloatSetting(EIniFile ConfigFile, FString ConfigSection, FString ValueKey, float MinValue, float DefaultAndCurrentValue, float MaxValue)
+	{
+		IniFile = ConfigFile;
+		Section = ConfigSection;
+
+		Min = MinValue;
+		Current = DefaultAndCurrentValue;
+		Default = DefaultAndCurrentValue;
+		Max = MaxValue;
+	}
+
+	/** Returns true if the CheckThis float is within min and max values. */
+	bool ValidateFloatSetting(float CheckThis)
+	{
+		return CheckThis >= this->Min && CheckThis <= this->Max;
+	}
 
 	/** The minimum value this setting can be set to. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
@@ -32,25 +52,4 @@ struct FFloatSetting : public FSettingBase
 	/** The maximum value this setting can be set to. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float Max = 100.f;
-
-	/** Disabled default constructor. */
-	FFloatSetting() {}
-
-	FFloatSetting(EIniFile ConfigFile, FString ConfigSection, FString ValueKey, float MinValue, float DefaultAndCurrentValue, float MaxValue)
-	{
-		IniFile = ConfigFile;
-		Section = ConfigSection;
-		Key = ValueKey;
-
-		Min = MinValue;
-		Current = DefaultAndCurrentValue;
-		Default = DefaultAndCurrentValue;
-		Max = MaxValue;
-	}
-
-	/** Returns true if the CheckThis float is within min and max values. */
-	bool ValidateFloatSetting(float CheckThis)
-	{
-		return CheckThis >= this->Min && CheckThis <= this->Max;
-	}
 };

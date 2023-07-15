@@ -1,4 +1,4 @@
-// Copyright SixlineGames LLC. All Rights Reserved.
+// Copyright Nathan Ralph. All Rights Reserved.
 
 #pragma once
 
@@ -6,32 +6,13 @@
 #include "SettingBase.h"
 #include "OpposingTogglesSetting.generated.h"
 
- /**
-  * Setting used to ensure only one of the provided toggles can be active at a time.
-  */
+/**
+ * Setting used to ensure only one of the provided toggles can be active at a time.
+ */
 USTRUCT(BlueprintType, Category = "Easy Settings")
 struct FOpposingTogglesSetting : public FSettingBase
 {
 	GENERATED_BODY()
-public:
-	/** The name of the first toggle. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FString FirstToggle = "";
-
-	/** The name of the second toggle. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FString SecondToggle = "";
-
-	/**
-	 * True if the setting is currently set to the first toggle.
-	 * This setting is initialized from the ini file, or defaults to bFirstIsDefault if not present or valid.
-	 */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	bool bFirstIsActive = false;
-
-	/** True if the first toggle should be active by default. Should only be set from the object that instantiates this setting. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	bool bFirstIsDefault = false;
 
 	/** Disabled default constructor. */
 	FOpposingTogglesSetting() {}
@@ -86,4 +67,23 @@ public:
 		// Nothing matched, return 0.
 		return 0;
 	}
+
+	/** The name of the first toggle. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FString FirstToggle = "";
+
+	/** The name of the second toggle. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FString SecondToggle = "";
+
+	/**
+	 * True if the setting is currently set to the first toggle.
+	 * This setting is initialized from the ini file, or defaults to bFirstIsDefault if not present or valid.
+	 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	bool bFirstIsActive = false;
+
+	/** True if the first toggle should be active by default. Should only be set from the object that instantiates this setting. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	bool bFirstIsDefault = false;
 };

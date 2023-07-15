@@ -1,4 +1,4 @@
-// Copyright SixlineGames LLC. All Rights Reserved.
+// Copyright Nathan Ralph. All Rights Reserved.
 
 #include "EasySettingsSubsystem.h"
 

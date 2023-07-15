@@ -1,6 +1,8 @@
-// Copyright SixlineGames LLC. All Rights Reserved.
+// Copyright Nathan Ralph. All Rights Reserved.
 
 #include "EasySettingsStatics.h"
+
+#include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogEasySettings, Log, All);
 
@@ -102,7 +104,7 @@ void UEasySettingsStatics::UpdateFloatSetting(const UObject* WorldContextObject,
 
 			// Update the TMap then let listeners know of the change.
 			FoundFloatSetting->Current = NewCurrent;
-			SubSys->FloatSettingChanged_Delegate.Broadcast(SettingID, NewCurrent);
+			SubSys->FloatSettingChangedDelegate.Broadcast(SettingID, NewCurrent);
 
 			// Successfully updated.
 			bOutSuccess = true;
@@ -125,7 +127,7 @@ void UEasySettingsStatics::SetupOpposingTogglesSetting(const UObject* WorldConte
 
 	FString IniFileName = Setting.GetIniFileName();
 	FString TMapKey = Setting.GetTMapKey();
-	UEasySettingsSubsystem* SubSys = GetESSubsystem(WorldContextObject);	
+	UEasySettingsSubsystem* SubSys = GetESSubsystem(WorldContextObject);
 
 	// Check if the setting is in the config file yet.
 	FString StringReceived;
@@ -222,7 +224,7 @@ void UEasySettingsStatics::UpdateOpposingTogglesSetting(const UObject* WorldCont
 
 			// Update the TMap then let listeners know of the change.
 			FoundOpposingToggle->bFirstIsActive = bActivateFirst;
-			SubSys->OpposingTogglesSettingChanged_Delegate.Broadcast(SettingID, bActivateFirst);
+			SubSys->OpposingTogglesSettingChangedDelegate.Broadcast(SettingID, bActivateFirst);
 
 			bOutSuccess = true;
 		}

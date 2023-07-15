@@ -1,4 +1,4 @@
-// Copyright SixlineGames LLC. All Rights Reserved.
+// Copyright Nathan Ralph. All Rights Reserved.
 
 #pragma once
 
@@ -7,7 +7,6 @@
 #include "SettingTypes/OpposingTogglesSetting.h"
 #include "SettingTypes/FloatSetting.h"
 #include "EasySettingsSubsystem.h"
-#include "Kismet/GameplayStatics.h"
 #include "EasySettingsStatics.generated.h"
 
 /**
@@ -17,6 +16,7 @@ UCLASS()
 class EASYSETTINGS_API UEasySettingsStatics : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
+
 private:
 	/** Helper function for getting the Easy Settings Subsystem. */
 	static UEasySettingsSubsystem* GetESSubsystem(const UObject* WorldContextObject);

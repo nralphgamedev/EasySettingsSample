@@ -1,4 +1,4 @@
-// Copyright SixlineGames LLC. All Rights Reserved.
+// Copyright Nathan Ralph. All Rights Reserved.
 
 #pragma once
 
@@ -19,6 +19,7 @@ class UEasySettingsInterface : public UInterface
 class EASYSETTINGS_API IEasySettingsInterface
 {
 	GENERATED_BODY()
+
 public:
 	/** Signals the widget to reset to default values. */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Easy Settings Widget Interface")
