@@ -16,11 +16,7 @@ UCLASS()
 class EASYSETTINGS_API UEasySettingsStatics : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
-
-private:
-	/** Helper function for getting the Easy Settings Subsystem. */
-	static UEasySettingsSubsystem* GetESSubsystem(const UObject* WorldContextObject);
-
+	
 public:
 	/**
 	 * Stores a pointer to the setting in a TMap. Updates the setting with what is already present in the ini file or writes the defaults out if it isn't already there.
@@ -83,4 +79,8 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Easy Settings Statics", meta = (WorldContext = "WorldContextObject"))
 	static void UpdateOpposingTogglesSetting(const UObject* WorldContextObject, const FSettingBase& SettingID, bool bActivateFirst, bool& bOutSuccess);
+
+private:
+	/** Helper function for getting the Easy Settings Subsystem. */
+	static UEasySettingsSubsystem& GetESSubsystem(const UObject* WorldContextObject);
 };

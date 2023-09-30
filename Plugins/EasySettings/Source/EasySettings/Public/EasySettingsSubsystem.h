@@ -3,12 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SettingTypes/FloatSetting.h"
+#include "SettingTypes/OpposingTogglesSetting.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "SettingTypes/SettingBase.h"
 #include "EasySettingsSubsystem.generated.h"
-
-struct FOpposingTogglesSetting;
-struct FFloatSetting;
 
 /**
  * Subsystem for storing delegates and TMaps related to our various setting types.
