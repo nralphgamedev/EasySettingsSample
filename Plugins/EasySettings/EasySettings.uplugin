@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"Version": 5.0,
+	"Version": 5.2,
 	"VersionName": "0.5",
 	"FriendlyName": "EasySettings",
 	"Description": "Commonly used functionality required for setting up some basic settings, usable in both C++ and BP.",

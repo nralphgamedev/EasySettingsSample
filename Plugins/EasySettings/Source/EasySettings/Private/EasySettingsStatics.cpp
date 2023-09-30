@@ -1,16 +1,9 @@
 // Copyright Nathan Ralph. All Rights Reserved.
 
 #include "EasySettingsStatics.h"
-
 #include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogEasySettings, Log, All);
-
-UEasySettingsSubsystem* UEasySettingsStatics::GetESSubsystem(const UObject* WorldContextObject)
-{
-	UGameInstance* GI = UGameplayStatics::GetGameInstance(WorldContextObject);
-	return GI->GetSubsystem<UEasySettingsSubsystem>();
-}
 
 void UEasySettingsStatics::SetupFloatSetting(const UObject* WorldContextObject, FFloatSetting& Setting, bool& bOutSuccess)
 {
@@ -18,7 +11,7 @@ void UEasySettingsStatics::SetupFloatSetting(const UObject* WorldContextObject, 
 
 	FString IniFileName = Setting.GetIniFileName();
 	FString TMapKey = Setting.GetTMapKey();
-	UEasySettingsSubsystem* SubSys = GetESSubsystem(WorldContextObject);
+	UEasySettingsSubsystem& SubSys = GetESSubsystem(WorldContextObject);
 
 	// Check if the setting is in the config file yet.
 	float FloatReceived;
@@ -48,14 +41,15 @@ void UEasySettingsStatics::SetupFloatSetting(const UObject* WorldContextObject, 
 		Setting.Current = DefaultFloat;
 	}
 
-	if (SubSys->FloatSettings.Contains(TMapKey))
+	if (!SubSys.FloatSettings.Contains(TMapKey))
 	{
-		// If adding something that is already in our TMap, it will be replaced. Print a warning but continue to replace the element.
-		UE_LOG(LogEasySettings, Warning, TEXT("This FloatSetting was already setup. Replacing old setting with new. Setting TMap key was %s"), *TMapKey);
-		bOutSuccess = false;
+		SubSys.FloatSettings.Add(TMapKey, &Setting);
 	}
-
-	SubSys->FloatSettings.Add(TMapKey, &Setting);
+	else
+	{
+		// Don't overwrite a setting that was already setup.
+		UE_LOG(LogEasySettings, Error, TEXT("This FloatSetting was already setup. Setting TMap key was %s"), *TMapKey);
+	}
 }
 
 void UEasySettingsStatics::GetFloatSetting(const UObject* WorldContextObject, const FSettingBase& SettingID, bool& bOutSuccess, FFloatSetting& OutSetting)
@@ -63,19 +57,19 @@ void UEasySettingsStatics::GetFloatSetting(const UObject* WorldContextObject, co
 	bOutSuccess = false;
 
 	FString TMapKey = SettingID.GetTMapKey();
-	UEasySettingsSubsystem* SubSys = GetESSubsystem(WorldContextObject);
+	UEasySettingsSubsystem& SubSys = GetESSubsystem(WorldContextObject);
 
-	if (SubSys->FloatSettings.Contains(TMapKey))
+	if (SubSys.FloatSettings.Contains(TMapKey))
 	{
 		// We don't need to handle the possibility of someone changing this setting manually in the ini, as we are just referencing what is already in memory.
 		// The Setup function ensures what is in the ini falls within bounds prior to storing it in memory.
-		OutSetting = **SubSys->FloatSettings.Find(TMapKey);
+		OutSetting = **SubSys.FloatSettings.Find(TMapKey);
 		bOutSuccess = true;
 	}
 	else
 	{
 		// It was never registered through the Setup function, don't signal a success.
-		//UE_LOG(LogEasySettings, Warning, TEXT("GetFloatSetting() called on a FloatSetting that was never registered with SetupFloatSetting(). Setting TMap key was %s"), *TMapKey);
+		UE_LOG(LogEasySettings, Warning, TEXT("GetFloatSetting() called on a FloatSetting that was never registered with SetupFloatSetting(). Setting TMap key was %s"), *TMapKey);
 	}
 }
 
@@ -85,11 +79,11 @@ void UEasySettingsStatics::UpdateFloatSetting(const UObject* WorldContextObject,
 
 	FString IniFileName = SettingID.GetIniFileName();
 	FString TMapKey = SettingID.GetTMapKey();
-	UEasySettingsSubsystem* SubSys = GetESSubsystem(WorldContextObject);
+	UEasySettingsSubsystem& SubSys = GetESSubsystem(WorldContextObject);
 
-	if (SubSys->FloatSettings.Contains(TMapKey))
+	if (SubSys.FloatSettings.Contains(TMapKey))
 	{
-		FFloatSetting* FoundFloatSetting = *SubSys->FloatSettings.Find(TMapKey);
+		FFloatSetting* FoundFloatSetting = *SubSys.FloatSettings.Find(TMapKey);
 		if (FoundFloatSetting->ValidateFloatSetting(NewCurrent))
 		{
 			// Make sure the new setting is actually different than the old.
@@ -104,7 +98,7 @@ void UEasySettingsStatics::UpdateFloatSetting(const UObject* WorldContextObject,
 
 			// Update the TMap then let listeners know of the change.
 			FoundFloatSetting->Current = NewCurrent;
-			SubSys->FloatSettingChangedDelegate.Broadcast(SettingID, NewCurrent);
+			SubSys.FloatSettingChangedDelegate.Broadcast(SettingID, NewCurrent);
 
 			// Successfully updated.
 			bOutSuccess = true;
@@ -127,7 +121,7 @@ void UEasySettingsStatics::SetupOpposingTogglesSetting(const UObject* WorldConte
 
 	FString IniFileName = Setting.GetIniFileName();
 	FString TMapKey = Setting.GetTMapKey();
-	UEasySettingsSubsystem* SubSys = GetESSubsystem(WorldContextObject);
+	UEasySettingsSubsystem& SubSys = GetESSubsystem(WorldContextObject);
 
 	// Check if the setting is in the config file yet.
 	FString StringReceived;
@@ -163,14 +157,15 @@ void UEasySettingsStatics::SetupOpposingTogglesSetting(const UObject* WorldConte
 	// Either way, we should have a valid default value now.
 	bOutSuccess = true;
 
-	if (SubSys->OpposingTogglesSettings.Contains(TMapKey))
+	if (!SubSys.OpposingTogglesSettings.Contains(TMapKey))
 	{
-		// If adding something that is already in our TMap, it will be replaced. Print a warning but continue to replace the element.
-		UE_LOG(LogEasySettings, Warning, TEXT("This OpposingTogglesSettings was already setup. Replacing old setting with new. Setting TMap key was %s"), *TMapKey);
-		bOutSuccess = false;
+		SubSys.OpposingTogglesSettings.Add(TMapKey, &Setting);
 	}
-
-	SubSys->OpposingTogglesSettings.Add(TMapKey, &Setting);
+	else
+	{
+		// Don't overwrite a setting that was already setup.
+		UE_LOG(LogEasySettings, Error, TEXT("This OpposingTogglesSettings was already setup. Setting TMap key was %s"), *TMapKey);
+	}
 }
 
 void UEasySettingsStatics::GetOpposingTogglesSetting(const UObject* WorldContextObject, const FSettingBase& SettingID, bool& bOutSuccess, FOpposingTogglesSetting& OutSetting)
@@ -178,19 +173,19 @@ void UEasySettingsStatics::GetOpposingTogglesSetting(const UObject* WorldContext
 	bOutSuccess = false;
 
 	FString TMapKey = SettingID.GetTMapKey();
-	UEasySettingsSubsystem* SubSys = GetESSubsystem(WorldContextObject);
+	UEasySettingsSubsystem& SubSys = GetESSubsystem(WorldContextObject);
 
-	if (SubSys->OpposingTogglesSettings.Contains(TMapKey))
+	if (SubSys.OpposingTogglesSettings.Contains(TMapKey))
 	{
 		// We don't need to handle the possibility of someone changing this setting manually in the ini file, as we are just referencing what is already in memory.
 		// The Setup function ensures what is in the ini file is valid prior to storing it in memory.
-		OutSetting = **SubSys->OpposingTogglesSettings.Find(TMapKey);
+		OutSetting = **SubSys.OpposingTogglesSettings.Find(TMapKey);
 		bOutSuccess = true;
 	}
 	else
 	{
 		// It was never registered through the Setup function, don't signal a success.
-		//UE_LOG(LogEasySettings, Warning, TEXT("GetOpposingTogglesSetting() called on an OpposingTogglesSetting that was never registered with SetupOpposingTogglesSetting(). Setting TMap key was %s"), *TMapKey);
+		UE_LOG(LogEasySettings, Warning, TEXT("GetOpposingTogglesSetting() called on an OpposingTogglesSetting that was never registered with SetupOpposingTogglesSetting(). Setting TMap key was %s"), *TMapKey);
 	}
 }
 
@@ -200,11 +195,11 @@ void UEasySettingsStatics::UpdateOpposingTogglesSetting(const UObject* WorldCont
 
 	FString IniFileName = SettingID.GetIniFileName();
 	FString TMapKey = SettingID.GetTMapKey();
-	UEasySettingsSubsystem* SubSys = GetESSubsystem(WorldContextObject);
+	UEasySettingsSubsystem& SubSys = GetESSubsystem(WorldContextObject);
 
-	if (SubSys->OpposingTogglesSettings.Contains(TMapKey))
+	if (SubSys.OpposingTogglesSettings.Contains(TMapKey))
 	{
-		FOpposingTogglesSetting* FoundOpposingToggle = *SubSys->OpposingTogglesSettings.Find(TMapKey);
+		FOpposingTogglesSetting* FoundOpposingToggle = *SubSys.OpposingTogglesSettings.Find(TMapKey);
 		// Make sure the new setting is actually different than the old.
 		if (FoundOpposingToggle->bFirstIsActive != bActivateFirst)
 		{
@@ -224,7 +219,7 @@ void UEasySettingsStatics::UpdateOpposingTogglesSetting(const UObject* WorldCont
 
 			// Update the TMap then let listeners know of the change.
 			FoundOpposingToggle->bFirstIsActive = bActivateFirst;
-			SubSys->OpposingTogglesSettingChangedDelegate.Broadcast(SettingID, bActivateFirst);
+			SubSys.OpposingTogglesSettingChangedDelegate.Broadcast(SettingID, bActivateFirst);
 
 			bOutSuccess = true;
 		}
@@ -234,4 +229,10 @@ void UEasySettingsStatics::UpdateOpposingTogglesSetting(const UObject* WorldCont
 		// This setting was never setup, don't signal a success.
 		UE_LOG(LogEasySettings, Warning, TEXT("UpdateOpposingTogglesSetting() called on a OpposingTogglesSetting that was never setup with SetupOpposingTogglesSetting(). Setting TMap key was %s"), *TMapKey);
 	}
+}
+
+UEasySettingsSubsystem& UEasySettingsStatics::GetESSubsystem(const UObject* WorldContextObject)
+{
+	UGameInstance* GI = UGameplayStatics::GetGameInstance(WorldContextObject);
+	return *GI->GetSubsystem<UEasySettingsSubsystem>();
 }
